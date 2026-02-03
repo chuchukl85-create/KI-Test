@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>PrintMaster AI Support MVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 p-6 font-sans">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800"><i class="fas fa-print text-blue-600 mr-2"></i>PrintMaster <span class="text-blue-600">AI</span></h1>
+            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">Status: Techniker-Entlastung aktiv</span>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="font-bold mb-4">Fehlercode Check</h2>
+                <input type="text" id="errorCode" placeholder="z.B. E-102" class="w-full p-2 border rounded mb-4 outline-none focus:ring-2 focus:ring-blue-500">
+                <button onclick="checkError()" class="w-full bg-slate-800 text-white py-2 rounded-lg hover:bg-slate-700 transition">Code prüfen</button>
+                <div id="errorResult" class="mt-4 text-sm hidden p-3 bg-red-50 text-red-700 rounded-lg"></div>
+            </div>
+
+            <div class="md:col-span-2 bg-white rounded-2xl shadow-lg border border-gray-200 flex flex-col h-[500px]">
+                <div class="p-4 border-b bg-blue-600 text-white rounded-t-2xl font-bold italic">Smart-Support Assistant</div>
+                <div id="chatWindow" class="flex-grow p-4 overflow-y-auto space-y-4 text-sm text-slate-600">
+                    <div class="bg-gray-100 p-3 rounded-lg mr-12 text-slate-800">Hallo! Ich bin Ihr KI-Techniker. Welches Problem hat Ihr Drucker heute?</div>
+                </div>
+                <div class="p-4 border-t flex gap-2">
+                    <input type="text" id="userInput" placeholder="Was ist kaputt?" class="flex-grow p-2 border rounded-lg outline-none">
+                    <button onclick="sendMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-lg"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function checkError() {
+            const code = document.getElementById('errorCode').value.toUpperCase();
+            const res = document.getElementById('errorResult');
+            res.classList.remove('hidden');
+            if(code === "E-102") res.innerText = "Papierstau in Kassette 2. Bitte Klappe A öffnen und Walzen reinigen.";
+            else if(code === "E-500") res.innerText = "Trommel-Lebensdauer fast erreicht. Automatische Nachbestellung initiiert?";
+            else res.innerText = "Code unbekannt. Bitte KI-Chat nutzen.";
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const chat = document.getElementById('chatWindow');
+            if(!input.value) return;
+            
+            chat.innerHTML += `<div class="bg-blue-50 p-3 rounded-lg ml-12 text-blue-800 text-right font-medium">${input.value}</div>`;
+            
+            setTimeout(() => {
+                chat.innerHTML += `<div class="bg-gray-100 p-3 rounded-lg mr-12 text-slate-800"><strong>KI:</strong> Ich habe Ihr Problem analysiert. Basierend auf dem Handbuch Modell X-500 liegt ein Problem mit der Fixiereinheit vor. Ich empfehle einen Reset (30s vom Strom trennen).</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }, 800);
+            input.value = "";
+        }
+    </script>
+</body>
+</html>
